@@ -1,0 +1,673 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+    "name": "API Cluster Alimentos Guanajuato",
+    "description": "Colección para probar la API del Cluster Alimentos Guanajuato",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "description": "Endpoints para registro, inicio de sesión y gestión de usuarios",
+      "item": [
+        {
+          "name": "Registro de Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Usuario\",\n  \"lastName\": \"Prueba\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"member\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Registra un nuevo usuario en el sistema"
+          },
+          "response": []
+        },
+        {
+          "name": "Inicio de Sesión",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Inicia sesión y obtiene un token JWT"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Perfil",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Obtiene el perfil del usuario autenticado"
+          },
+          "response": []
+        },
+        {
+          "name": "Recuperar Contraseña",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "forgot-password"]
+            },
+            "description": "Solicita un token para restablecer la contraseña"
+          },
+          "response": []
+        },
+        {
+          "name": "Restablecer Contraseña",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"token-de-restablecimiento\",\n  \"password\": \"NuevaPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "reset-password"]
+            },
+            "description": "Restablece la contraseña usando el token recibido"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Empresas",
+      "description": "Endpoints para gestión de empresas",
+      "item": [
+        {
+          "name": "Crear Empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Empresa Ejemplo\",\n  \"sector\": \"Alimentos\",\n  \"description\": \"Descripción de la empresa\",\n  \"address\": \"Dirección de la empresa\",\n  \"city\": \"León\",\n  \"state\": \"Guanajuato\",\n  \"postalCode\": \"37000\",\n  \"phone\": \"4771234567\",\n  \"email\": \"contacto@empresa.com\",\n  \"website\": \"https://www.empresa.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/companies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companies"]
+            },
+            "description": "Crea una nueva empresa"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Empresas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/companies",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companies"]
+            },
+            "description": "Obtiene la lista de empresas"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Empresa por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/companies/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-empresa",
+                  "description": "ID de la empresa"
+                }
+              ]
+            },
+            "description": "Obtiene los detalles de una empresa específica"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Empresa",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Empresa Actualizada\",\n  \"sector\": \"Alimentos y Bebidas\",\n  \"description\": \"Nueva descripción de la empresa\",\n  \"address\": \"Nueva dirección\",\n  \"city\": \"León\",\n  \"state\": \"Guanajuato\",\n  \"postalCode\": \"37000\",\n  \"phone\": \"4771234567\",\n  \"email\": \"nuevo@empresa.com\",\n  \"website\": \"https://www.empresa-actualizada.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/companies/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-empresa",
+                  "description": "ID de la empresa"
+                }
+              ]
+            },
+            "description": "Actualiza los datos de una empresa"
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Estado de Publicación",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isPublished\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/companies/:id/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companies", ":id", "publish"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-empresa",
+                  "description": "ID de la empresa"
+                }
+              ]
+            },
+            "description": "Cambia el estado de publicación de una empresa"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Empresa (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/companies/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "companies", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-empresa",
+                  "description": "ID de la empresa"
+                }
+              ]
+            },
+            "description": "Elimina una empresa (solo administradores)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Membresías",
+      "description": "Endpoints para gestión de membresías",
+      "item": [
+        {
+          "name": "Solicitar Membresía",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": \"id-de-la-empresa\",\n  \"type\": \"basic\",\n  \"paymentMethod\": \"transfer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/apply",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", "apply"]
+            },
+            "description": "Solicita una nueva membresía para una empresa"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Mi Membresía",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", "me"]
+            },
+            "description": "Obtiene la membresía del usuario actual"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Todas las Membresías (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships"]
+            },
+            "description": "Obtiene todas las membresías (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Aprobar Membresía (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/:id/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", ":id", "approve"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-membresia",
+                  "description": "ID de la membresía"
+                }
+              ]
+            },
+            "description": "Aprueba una membresía pendiente (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Rechazar Membresía (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/:id/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", ":id", "reject"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-membresia",
+                  "description": "ID de la membresía"
+                }
+              ]
+            },
+            "description": "Rechaza una membresía pendiente (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Renovar Membresía (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/:id/renew",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", ":id", "renew"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-membresia",
+                  "description": "ID de la membresía"
+                }
+              ]
+            },
+            "description": "Renueva una membresía existente (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Estado de Membresía (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-membresia",
+                  "description": "ID de la membresía"
+                }
+              ]
+            },
+            "description": "Actualiza el estado de una membresía (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Estado de Pago (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentStatus\": \"paid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/:id/payment-status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", ":id", "payment-status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-membresia",
+                  "description": "ID de la membresía"
+                }
+              ]
+            },
+            "description": "Actualiza el estado de pago de una membresía (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar Pago (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1000,\n  \"paymentMethod\": \"transfer\",\n  \"paymentDate\": \"2023-01-01\",\n  \"reference\": \"REF123456\",\n  \"notes\": \"Pago de membresía anual\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/:id/payment",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", ":id", "payment"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-de-la-membresia",
+                  "description": "ID de la membresía"
+                }
+              ]
+            },
+            "description": "Registra un pago para una membresía (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Membresías Pendientes (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", "pending"]
+            },
+            "description": "Obtiene las membresías pendientes de aprobación (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Enviar Recordatorios de Renovación (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/memberships/send-renewal-reminders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "memberships", "send-renewal-reminders"]
+            },
+            "description": "Envía recordatorios de renovación a membresías próximas a vencer (solo administradores)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Administración",
+      "description": "Endpoints para administradores del sistema",
+      "item": [
+        {
+          "name": "Obtener Estadísticas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "stats"]
+            },
+            "description": "Obtiene estadísticas generales del sistema (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users"]
+            },
+            "description": "Obtiene la lista de todos los usuarios (solo administradores)"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Estado de Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users/:id/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users", ":id", "status"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "id-del-usuario",
+                  "description": "ID del usuario"
+                }
+              ]
+            },
+            "description": "Activa o desactiva un usuario (solo administradores)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
