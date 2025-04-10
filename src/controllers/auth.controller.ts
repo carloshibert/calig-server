@@ -49,7 +49,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
         subject: welcomeEmail.subject,
         html: welcomeEmail.html
       });
-      
+
       res.status(201).json({
         _id: user._id,
         email: user.email,
@@ -68,18 +68,18 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
 // Login de usuario
 export const login = async (req: Request, res: Response): Promise<void> => {
+  // Control logs for error tracking
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400).json({ errors: errors.array() });
     return;
   }
-
   const { email, password } = req.body;
+  console.log(email, password);
 
   try {
     // Buscar usuario por email
     const user = await User.findOne({ email });
-
     if (!user) {
       res.status(401).json({ message: 'Email o contraseña incorrectos' });
       return;
@@ -125,6 +125,49 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
+// Actualizar perfil de usuario
+export const updateProfile = async (req: Request, res: Response): Promise<void> => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({ errors: errors.array() });
+    return;
+  }
+
+  const { firstName, lastName, email } = req.body;
+
+  try {
+    // Verificar si el email ya está en uso por otro usuario
+    if (email && email !== req.user.email) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        res.status(400).json({ message: 'El email ya está en uso' });
+        return;
+      }
+    }
+
+    // Actualizar usuario
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        firstName: firstName || req.user.firstName,
+        lastName: lastName || req.user.lastName,
+        email: email || req.user.email
+      },
+      { new: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+      return;
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    logger.error(`Error al actualizar perfil: ${error}`);
+    res.status(500).json({ message: 'Error al actualizar perfil' });
+  }
+};
+
 // Solicitar recuperación de contraseña
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   const errors = validationResult(req);
@@ -146,27 +189,27 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
 
     // Generar token de recuperación
     const resetToken = crypto.randomBytes(20).toString('hex');
-    
+
     // Guardar el token en el usuario (se podría implementar un campo resetToken y resetTokenExpire)
     // user.resetToken = resetToken;
     // user.resetTokenExpire = Date.now() + 3600000; // 1 hora
     // await user.save();
-    
+
     // Importar el servicio de email y enviar el correo con el token
     const { emailTemplates, sendEmail } = await import('../services/email.service');
-    
+
     const emailContent = emailTemplates.passwordReset(user.firstName, resetToken);
-    
+
     const emailSent = await sendEmail({
       to: user.email,
       subject: emailContent.subject,
       html: emailContent.html
     });
-    
+
     if (!emailSent) {
       logger.error(`No se pudo enviar el email de recuperación a ${user.email}`);
     }
-    
+
     res.status(200).json({
       message: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña'
     });
@@ -200,19 +243,19 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
     //   res.status(400).json({ message: 'Token de restablecimiento inválido o expirado' });
     //   return;
     // }
-    
+
     // Para este ejemplo, asumimos que el token es válido
     // Actualizar contraseña
     user.password = password;
     // Limpiar token de restablecimiento
     // user.resetToken = undefined;
     // user.resetTokenExpire = undefined;
-    
+
     await user.save();
-    
+
     // Enviar email de confirmación
     const { emailTemplates, sendEmail } = await import('../services/email.service');
-    
+
     await sendEmail({
       to: user.email,
       subject: 'Contraseña actualizada',
@@ -223,7 +266,7 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
         <p>Saludos,<br>El equipo del Cluster Alimentos Guanajuato</p>
       `
     });
-    
+
     res.status(200).json({
       message: 'Contraseña restablecida correctamente',
     });

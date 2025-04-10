@@ -43,3 +43,21 @@ export const resetPasswordValidator = [
     .isLength({ min: 6 })
     .withMessage('La contraseña debe tener al menos 6 caracteres'),
 ];
+
+export const updateProfileValidator = [
+  body('email')
+    .optional()
+    .isEmail()
+    .withMessage('Ingrese un email válido')
+    .normalizeEmail(),
+  body('firstName')
+    .optional()
+    .notEmpty()
+    .withMessage('El nombre no puede estar vacío')
+    .trim(),
+  body('lastName')
+    .optional()
+    .notEmpty()
+    .withMessage('El apellido no puede estar vacío')
+    .trim(),
+];

@@ -6,7 +6,7 @@ import Company from '../../src/models/Company';
 import Membership from '../../src/models/Membership';
 
 // Función para generar un token JWT para pruebas
-export const generateTestToken = (userId: string, role: string = 'user'): string => {
+export const generateTestToken = (userId: string, role: string = 'member'): string => {
   // Definir el secreto como string
   const secret = process.env.JWT_SECRET || 'test-jwt-secret-key';
   // Definir las opciones de firma

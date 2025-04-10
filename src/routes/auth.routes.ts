@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { register, login, getProfile, forgotPassword, resetPassword } from '../controllers/auth.controller';
-import { registerValidator, loginValidator, forgotPasswordValidator, resetPasswordValidator } from '../validators/auth.validator';
+import { register, login, getProfile, forgotPassword, resetPassword, updateProfile } from '../controllers/auth.controller';
+import { registerValidator, loginValidator, forgotPasswordValidator, resetPasswordValidator, updateProfileValidator } from '../validators/auth.validator';
 import { protect } from '../middleware/auth';
 
 const router = Router();
@@ -13,5 +13,6 @@ router.post('/reset-password', resetPasswordValidator, resetPassword);
 
 // Rutas protegidas
 router.get('/me', protect, getProfile);
+router.put('/profile', protect, updateProfileValidator, updateProfile);
 
 export default router;

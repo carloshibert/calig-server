@@ -140,14 +140,90 @@ Para obtener un token, debes registrarte o iniciar sesión utilizando los endpoi
 
 ### Endpoints de Empresas
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| POST | `/api/companies` | Crear perfil de empresa | Privado |
-| GET | `/api/companies` | Obtener todas las empresas | Privado |
-| GET | `/api/companies/:id` | Obtener empresa por ID | Privado |
-| PUT | `/api/companies/:id` | Actualizar empresa | Privado (Propietario) |
-| PUT | `/api/companies/:id/publish` | Cambiar estado de publicación | Privado (Propietario) |
-| DELETE | `/api/companies/:id` | Eliminar empresa | Privado (Admin) |
+### Documentación de Endpoints de Company
+
+#### Crear perfil de empresa
+- **Método:** POST
+- **Ruta:** `/api/companies`
+- **Descripción:** Crea un nuevo perfil de empresa.
+- **Acceso:** Privado
+- **Cuerpo de solicitud:**
+  ```json
+  {
+    "companyName": "Nombre de la Empresa",
+    "sector": "Sector",
+    "description": "Descripción",
+    "contactInfo": {
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Email",
+      "website": "Sitio Web"
+    },
+    "socialMedia": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    }
+  }
+  ```
+- **Códigos de estado:**
+  - 201: Creado
+  - 400: Error de validación
+  - 500: Error interno
+
+#### Obtener todas las empresas
+- **Método:** GET
+- **Ruta:** `/api/companies`
+- **Descripción:** Obtiene una lista de todas las empresas.
+- **Acceso:** Privado
+- **Parámetros de consulta:**
+  - `sector`: Filtrar por sector
+- **Códigos de estado:**
+  - 200: Éxito
+  - 500: Error interno
+
+#### Obtener empresa por ID
+- **Método:** GET
+- **Ruta:** `/api/companies/:id`
+- **Descripción:** Obtiene los detalles de una empresa específica.
+- **Acceso:** Privado
+- **Códigos de estado:**
+  - 200: Éxito
+  - 403: No autorizado
+  - 404: No encontrado
+  - 500: Error interno
+
+#### Actualizar empresa
+- **Método:** PUT
+- **Ruta:** `/api/companies/:id`
+- **Descripción:** Actualiza el perfil de una empresa.
+- **Acceso:** Privado (Propietario)
+- **Códigos de estado:**
+  - 200: Éxito
+  - 400: Error de validación
+  - 404: No encontrado
+  - 500: Error interno
+
+#### Cambiar estado de publicación
+- **Método:** PUT
+- **Ruta:** `/api/companies/:id/publish`
+- **Descripción:** Cambia el estado de publicación de una empresa.
+- **Acceso:** Privado (Propietario)
+- **Códigos de estado:**
+  - 200: Éxito
+  - 404: No encontrado
+  - 500: Error interno
+
+#### Eliminar empresa
+- **Método:** DELETE
+- **Ruta:** `/api/companies/:id`
+- **Descripción:** Elimina el perfil de una empresa.
+- **Acceso:** Privado (Admin)
+- **Códigos de estado:**
+  - 200: Éxito
+  - 404: No encontrado
+  - 500: Error interno
 
 #### Ejemplo de Creación de Empresa
 

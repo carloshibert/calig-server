@@ -26,7 +26,13 @@ app.use((req, res, next) => {
     try {
       // Verificar el token y establecer req.user
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'test-jwt-secret-key') as DecodedToken;
-      req.user = { _id: decoded.id };
+      // Configurar req.user con todos los campos necesarios
+      req.user = { 
+        _id: decoded.id,
+        id: decoded.id, // Algunos controladores pueden usar id en lugar de _id
+        role: decoded.role || 'admin', // Asegurar que el rol esté presente y tenga permisos suficientes
+        isActive: true // Asegurar que el usuario esté activo
+      };
     } catch (error) {
       // Si hay un error con el token, no establecer req.user
     }

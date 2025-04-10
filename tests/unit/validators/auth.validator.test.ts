@@ -7,7 +7,13 @@ jest.mock('express-validator', () => ({
   body: () => ({
     isEmail: () => ({ withMessage: () => ({ normalizeEmail: () => ({}) }) }),
     isLength: () => ({ withMessage: () => ({}) }),
-    notEmpty: () => ({ withMessage: () => ({ trim: () => ({}) }) })
+    notEmpty: () => ({ withMessage: () => ({ trim: () => ({}) }) }),
+    optional: () => ({
+      isEmail: () => ({ withMessage: () => ({ normalizeEmail: () => ({}) }) }),
+      notEmpty: () => ({ withMessage: () => ({ trim: () => ({}) }) }),
+      isURL: () => ({ withMessage: () => ({}) }),
+      isISO8601: () => ({ withMessage: () => ({}) })
+    })
   }),
   validationResult: jest.fn().mockReturnValue({
     isEmpty: jest.fn(),
